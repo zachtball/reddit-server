@@ -33,17 +33,19 @@ const authenticateMe = (req, res, next) => {
         });
         r.getMe()
           .then((rRes) => {
+            console.log(rRes.name);
             User.findOneAndUpdate(
               { username: rRes.name },
               {
                 access_token: parsedBody.access_token,
                 refresh_token: parsedBody.refresh_token,
               },
-              { upsert: true, returnNewDocument: true }
+              { upsert: true, returnNewDocument: true, new: true }
             )
               .lean()
               .exec()
               .then((user) => {
+                console.log({ user });
                 // if (user) {
 
                 // }
@@ -60,7 +62,8 @@ const authenticateMe = (req, res, next) => {
                 //   }
                 // }
                 res.status(200).json(newToken(user._id));
-              });
+              })
+              .catch((err) => console.log('error finding user in db', err));
           })
           .catch((err) => console.log('init auth', err));
       }
