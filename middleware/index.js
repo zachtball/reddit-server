@@ -11,15 +11,12 @@ const snoo = async (req, res, next) => {
     return res.status(401).end();
   }
   const token = bearer.split('Bearer ')[1].trim();
-  console.log(token);
   let payload;
   try {
     payload = await verifyToken(token);
   } catch (e) {
     return res.status(401).end();
   }
-
-  console.log({ verified: payload });
 
   User.findById(payload.id)
     .lean()
