@@ -3,6 +3,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const userRouter = require('./resources/user/user.router');
+const contentRouter = require('./resources/content/content.router');
 const { authenticateMe } = require('./resources/user/user.controller');
 const { snoo } = require('./middleware');
 
@@ -16,6 +17,7 @@ app.post('/api/user/authenticate', authenticateMe);
 // adds snoowrap to the req object
 app.use(snoo);
 app.use('/api/user', userRouter);
+app.use('/api/content', contentRouter);
 
 // TODO: delete
 app.get('/api/swag', (req, res, next) => {

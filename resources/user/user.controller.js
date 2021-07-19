@@ -45,7 +45,6 @@ const authenticateMe = (req, res, next) => {
               .lean()
               .exec()
               .then((user) => {
-                console.log({ user });
                 // if (user) {
 
                 // }
@@ -66,15 +65,26 @@ const authenticateMe = (req, res, next) => {
               .catch((err) => console.log('error finding user in db', err));
           })
           .catch((err) => console.log('init auth', err));
+      } else {
+        next(parsedBody.error);
       }
     }
   );
 };
 
-const getMe = (req, res) => {
+const getMe = (req, res, next) => {
   req.r.getMe().then((snooRes) => {
     res.send(snooRes);
-  });
+  }).catch(err => next(err));
 };
 
-module.exports = { authenticateMe, getMe };
+const getSubscriptions = (req, res, next) => {
+  req.r
+    .getSubscriptions({ limit: 300 })
+    .then((subs) => {
+      res.send(subs);
+    })
+    .catch((err) => next(err));
+};
+
+module.exports = { authenticateMe, getMe, getSubscriptions };
