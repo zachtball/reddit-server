@@ -22,7 +22,6 @@ const snoo = async (req, res, next) => {
     .lean()
     .exec()
     .then((user) => {
-      console.log({ user });
       req.r = new Snoowrap({
         userAgent: 'writeit',
         clientId: process.env.API_CLIENT_ID,

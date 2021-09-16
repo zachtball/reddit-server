@@ -33,7 +33,6 @@ const authenticateMe = (req, res, next) => {
         });
         r.getMe()
           .then((rRes) => {
-            console.log(rRes.name);
             User.findOneAndUpdate(
               { username: rRes.name },
               {
@@ -73,9 +72,12 @@ const authenticateMe = (req, res, next) => {
 };
 
 const getMe = (req, res, next) => {
-  req.r.getMe().then((snooRes) => {
-    res.send(snooRes);
-  }).catch(err => next(err));
+  req.r
+    .getMe()
+    .then((snooRes) => {
+      res.send(snooRes);
+    })
+    .catch((err) => next(err));
 };
 
 const getSubscriptions = (req, res, next) => {
